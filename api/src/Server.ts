@@ -8,12 +8,13 @@ import 'express-async-errors';
 //import bodyParser from 'body-parser'
 import BaseRouter from './routes';
 import logger from '@globals/Logger';
-
+import http from 'http';
+import io from 'socket.io';
 
 // Init express
 const app = express();
-
-
+const port = http.crateServer(app);
+const socket = io.port()
 
 /************************************************************************************
  *                              Set basic express settings
