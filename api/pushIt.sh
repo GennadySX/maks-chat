@@ -14,4 +14,4 @@ read  -p "Branch: " branch
 
 read  -p "Role: " role
 
-git push %branch %role
+git push branch role
