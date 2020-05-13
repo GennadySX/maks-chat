@@ -5,14 +5,21 @@ import helmet from 'helmet';
 import express, { Request, Response, NextFunction } from 'express';
 import { BAD_REQUEST } from 'http-status-codes';
 import 'express-async-errors';
-//import bodyParser from 'body-parser'
-import BaseRouter from './routes';
-import logger from '@globals/Logger';
-import io from 'socket.io';
 import http from 'http';
+
+//
+import io from 'socket.io';
+import {Mongo} from './config/MongoDB'
+
+
 // Init express
 const app = express();
+Mongo.connect();
 
+
+
+import BaseRouter from './routes';
+import logger from '@globals/Logger';
 
 const socket = io(http.createServer(app))
 
