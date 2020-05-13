@@ -8,7 +8,7 @@ read -p "Your nickname: " user
 
 read -p "Commit message: " message
 
-git commit -m "maks-chat --user:%user --%message"
+git commit -m "maks-chat --user:$user --$message"
 
 read  -p "Branch: " branch
 
