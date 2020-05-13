@@ -16,6 +16,7 @@
     "@server": "dist/Server"
   },
   "dependencies": {
+    "@types/socket.io": "^2.1.4",
     "command-line-args": "^5.1.1",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
@@ -27,6 +28,7 @@
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.13",
     "morgan": "^1.10.0",
+    "socket.io": "^2.3.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {

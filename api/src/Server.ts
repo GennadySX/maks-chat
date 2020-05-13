@@ -8,13 +8,17 @@ import 'express-async-errors';
 //import bodyParser from 'body-parser'
 import BaseRouter from './routes';
 import logger from '@globals/Logger';
-import http from 'http';
 import io from 'socket.io';
-
+import http from 'http';
 // Init express
 const app = express();
-const port = http.crateServer(app);
-const socket = io(port);
+
+
+const socket = io(http.createServer(app))
+
+    socket.on('connection', (sc) => {
+        console.log('sc is ', sc)
+    })
 
 /************************************************************************************
  *                              Set basic express settings
