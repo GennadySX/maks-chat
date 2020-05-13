@@ -14,7 +14,7 @@ import io from 'socket.io';
 // Init express
 const app = express();
 const port = http.crateServer(app);
-const socket = io.port()
+const socket = io(port);
 
 /************************************************************************************
  *                              Set basic express settings
