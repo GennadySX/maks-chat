@@ -4,15 +4,14 @@ const UserSchema = createSchema(
     {
         firstName: Type.string({ required: true }),
         lastName: Type.string({ required: true }),
-        phone: Type.string({ required: true }),
+        phone: Type.string({ required: true, unique: true }),
         email: Type.string({ required: true, unique: true }),
         login: Type.string({ required: true }),
         password: Type.string({ required: true }),
-        avatar: Type.string({ required: true }),
-        aboutMe: Type.string({ required: true }),
-        created_at: Type.date({ default: Date.now as any }),
+        avatar: Type.string({ required: false }),
+        aboutMe: Type.string({ required: false }),
     },
-    { timestamps: { createdAt: true } }
+    { timestamps: { createdAt: true, updatedAt: true } }
 );
 
 

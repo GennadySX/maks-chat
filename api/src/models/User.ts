@@ -15,26 +15,26 @@ export  interface IUser {
 
 
 
-class User extends Model implements IUser {
+class User extends Model{
 
-    public email: string;
+ /*   public email: string;
     public password: string;
     public login: string;
     public firstName: string;
     public lastName: string;
     public avatar: string;
-    public aboutMe: string
+    public aboutMe: string*/
 
 
     constructor(props = typedModel(UserConts.table, UserSchema)) {
         super(props);
-        this.email = "";
+      /*  this.email = "";
         this.password = "";
         this.login = "";
         this.firstName = "";
         this.lastName = "";
         this.avatar = "";
-        this.aboutMe = "";
+        this.aboutMe = "";*/
     }
 
 }
