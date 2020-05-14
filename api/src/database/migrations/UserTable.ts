@@ -1,4 +1,4 @@
-import {createSchema, Type, typedModel} from "ts-mongoose";
+import {createSchema, Type} from "ts-mongoose";
 
 const UserSchema = createSchema(
     {

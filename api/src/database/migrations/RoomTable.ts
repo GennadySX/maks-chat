@@ -1,4 +1,4 @@
-import {createSchema, Type, typedModel} from "ts-mongoose";
+import {createSchema, Type} from "ts-mongoose";
 import {RoomConst} from "@const/Model/Room";
 
 const Members = createSchema(
@@ -25,18 +25,6 @@ const Admins = createSchema({
         invitedBy: Type.objectId({ required: true }),
     },{_id: false, timestamps: true}
 );
-
-export  interface IRoom {
-    name: string,
-    avatar: string,
-    type: Array<string>,
-    chat: Array<object>,
-    members: Array<object>,
-    owner: string,
-    admins: Array<object>,
-    createdAt: string,
-    updatedAt: string,
-}
 
 const RoomSchema = createSchema(
     {
