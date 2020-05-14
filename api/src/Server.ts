@@ -17,13 +17,12 @@ import {Mongo} from './config/MongoDB'
 const app = express();
 Mongo.connect();
 
-
-
 import BaseRouter from './routes';
 import logger from '@globals/Logger';
 
 const socket = io(http.createServer(app))
-
+    console.log('User connected!');
+    
     socket.on('connection', (sc) => {
         console.log('sc is ', sc)
     })
