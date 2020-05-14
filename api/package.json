@@ -16,6 +16,8 @@
     "@server": "dist/Server"
   },
   "dependencies": {
+    "@types/mongoose": "^5.7.19",
+    "@types/socket.io": "^2.1.4",
     "command-line-args": "^5.1.1",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
@@ -25,8 +27,11 @@
     "http-status-codes": "^1.4.0",
     "module-alias": "^2.2.2",
     "mongodb": "^3.5.7",
-    "mongoose": "^5.9.13",
+    "mongoose": "^5.9.14",
     "morgan": "^1.10.0",
+    "redis": "^3.0.2",
+    "socket.io": "^2.3.0",
+    "ts-mongoose": "0.0.21",
     "winston": "^3.2.1"
   },
   "devDependencies": {

@@ -1,48 +1,43 @@
-import { Request, Response, Router } from 'express';
+//Helpers
 import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
 import { ParamsDictionary } from 'express-serve-static-core';
-
 import { paramMissingError } from '@globals/constants';
 
+//Main
+import {post,get, put, file, del, router} from "@config/Router";
+import AuthController from "@controllers/Auth";
+
 // Init globals
-const router = Router();
+
 
 
 /******************************************************************************
  *                    Data init (get data ) -"GET"
  ******************************************************************************/
 
-router.get('/', async (req: Request, res: Response) => {
-    return res.status(OK).json({test: true});
-});
+get('/', new AuthController().index);
 
 
 /******************************************************************************
- *                     Creating - "POST"
+ *                     Creating - "POST /api/auth/""
  ******************************************************************************/
 
-router.post('/', async (req: Request, res: Response) => {
-    return res.status(CREATED).end();
-});
+post('/register', new AuthController().register);
+post('/login', new AuthController().login);
+post('/forgot-password', new AuthController().forgot);
+
 
 
 /******************************************************************************
- *                       Update - "PUT /api/users/update"
+ *                       Update - "PUT /api/auth/update"
  ******************************************************************************/
 
-router.put('/', async (req: Request, res: Response) => {
-    return res.status(OK).end();
-});
 
 
 /******************************************************************************
  *                    Delete - "DELETE"
  ******************************************************************************/
 
-router.delete('/:id', async (req: Request, res: Response) => {
-    const { id } = req.params as ParamsDictionary;
-    return res.status(OK).json({id: id});
-});
 
 
 

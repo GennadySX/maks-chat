@@ -5,16 +5,28 @@ import helmet from 'helmet';
 import express, { Request, Response, NextFunction } from 'express';
 import { BAD_REQUEST } from 'http-status-codes';
 import 'express-async-errors';
-//import bodyParser from 'body-parser'
-import BaseRouter from './routes';
-import logger from '@globals/Logger';
 import http from 'http';
+//import bodyParse from 'body-parser'
+
+//
 import io from 'socket.io';
+import {Mongo} from './config/MongoDB'
+
 
 // Init express
 const app = express();
-const port = http.crateServer(app);
-const socket = io(port);
+Mongo.connect();
+
+
+
+import BaseRouter from './routes';
+import logger from '@globals/Logger';
+
+const socket = io(http.createServer(app))
+
+    socket.on('connection', (sc) => {
+        console.log('sc is ', sc)
+    })
 
 /************************************************************************************
  *                              Set basic express settings

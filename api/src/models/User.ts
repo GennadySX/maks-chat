@@ -1,4 +1,7 @@
 import Model from "@models/Model";
+import {createSchema, Type, typedModel} from "ts-mongoose";
+import {UserConts} from "@globals/Constants/Model/User";
+import {UserSchema} from "@migration/UserTable";
 
 export  interface IUser {
     email: string,
@@ -11,27 +14,27 @@ export  interface IUser {
 }
 
 
-class User extends Model implements IUser {
 
-    public email: string;
+class User extends Model{
+
+ /*   public email: string;
     public password: string;
     public login: string;
     public firstName: string;
     public lastName: string;
     public avatar: string;
-    public aboutMe: string
+    public aboutMe: string*/
 
-    constructor(props: any) {
+
+    constructor(props = typedModel(UserConts.table, UserSchema)) {
         super(props);
-
-        this.email = "";
+      /*  this.email = "";
         this.password = "";
         this.login = "";
         this.firstName = "";
         this.lastName = "";
         this.avatar = "";
-        this.aboutMe = "";
-
+        this.aboutMe = "";*/
     }
 
 }

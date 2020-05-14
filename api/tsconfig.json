@@ -24,6 +24,15 @@
       ],
       "@server": [
         "src/Server"
+      ],
+      "@config/*": [
+        "src/config/*"
+      ],
+      "@migration/*": [
+        "src/database/migrations/*"
+      ],
+      "@const/*": [
+        "src/globals/Constants/*"
       ]
     },
     "types": [
