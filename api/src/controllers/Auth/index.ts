@@ -1,4 +1,5 @@
 import {IUser} from "@models/User";
+import Controller from "@controllers/Controller";
 
 export interface IAuthController {
     register: (email: string,  password: string) => Promise<IUser | null>;
@@ -8,7 +9,7 @@ export interface IAuthController {
 
 
 
-export default class AuthController implements IAuthController{
+export default class AuthController extends Controller implements IAuthController{
 
     /**
      * @param email
