@@ -1,5 +1,6 @@
 import ChatSocket from "./Socket/ChatSocket";
 import ZakSocket from "./Socket/ZakSocket";
+import { Emits } from '@const/SocketEmit/Emits';
 
 export default class SocketRoute {
     io: any;
@@ -10,11 +11,11 @@ export default class SocketRoute {
 
 
     public run = (io: any, client = null) => {
-        io.on('connection', (socket: any) => {
+        io.on(Emits.connection, (socket: any) => {
             //Так и можешь вызвать но используй константы emit-ов
             new ZakSocket(io, socket).run()
 
-            socket.on('chat', (msg: any) => new ChatSocket(socket, msg).chat)
+            socket.on(Emits.chat, (msg: any) => new ChatSocket(socket, msg).chat)
         })
     }
 }

@@ -35,6 +35,7 @@
     "rand-token": "^1.0.1",
     "redis": "^3.0.2",
     "socket.io": "^2.3.0",
+    "socketio-file-upload": "^0.7.0",
     "ts-mongoose": "0.0.21",
     "winston": "^3.2.1"
   },

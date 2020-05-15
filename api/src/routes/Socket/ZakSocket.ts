@@ -1,5 +1,6 @@
 
 import ChatSocketController from '@controllers/SocketControllers/ChatSocketController';
+import { Emits, systemMessages } from '@const/SocketEmit/Emits'
 
 export default class ZakSocket {
     io: any
@@ -11,31 +12,29 @@ export default class ZakSocket {
 
     public run = (io = this.io, socket = this.socket) => {
 
-        const ID    = (socket.id).toString().substr(0, 15);
-        const time  = (new Date).toLocaleTimeString()
+        // const uploader  = new SocketIOFileUpload();
+        // uploader.listen(socket);
+        console.log(`New WebSocket connection.`);
 
-        console.log(`User ${ID} connected`);
+        socket.on(Emits.join, (obj: {username: string, room:string }) => {
+            socket.join(obj.room);
 
-        socket.json.send({
-            'event': 'connected',
-            'name': ID,
-            'time': time,
-        });
+            socket.to(obj.room).emit(Emits.message, systemMessages(`${obj.username}, Добро пожаловать в чат!`));
+            socket.broadcast.to(obj.room).emit(Emits.message, systemMessages(`К нам присоеденился - ${obj.username}!`));
 
-        // socket.emit.json.send({
-        //     'event': 'privateMsg',
-        //     'name': ID,
-        //     'time': time,
-        // });
+            socket.on(Emits.sendMessage, (msg: object) => {
+                const timeLocal = process.hrtime().toString(); // время отправки сообщения, если при тестировании не сработает, использовать (new Date).toLocalTimeString()
+                new ChatSocketController(msg, io).chatIncetpDb(obj.username, obj.room, timeLocal);
 
-        socket.on('send message', (msg: object) => {
-            new ChatSocketController(msg, io).chatIncetpDb(ID, time);
-            // const time = (new Date).toLocaleTimeString();
+            })
 
+            socket.on(Emits.disconnect, () => {
+                io.to(obj.room).emit(Emits.message, systemMessages(`${obj.username} не в сети.`));
+            });
         })
 
-        socket.on('disconnect', () => {
-            io.emit('message', `A user ${ID} has left!`);
+        socket.on(Emits.disconnect, () => {
+            io.emit(Emits.message, systemMessages(`Session is closed!`));
         });
     }
 }

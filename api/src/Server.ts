@@ -6,6 +6,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import { BAD_REQUEST } from 'http-status-codes';
 import 'express-async-errors';
 import http from 'http';
+
 //import bodyParse from 'body-parser'
 
 //
@@ -20,7 +21,9 @@ Mongo.connect();
 import BaseRouter from './routes';
 import logger from '@globals/Logger';
 
-const socket = io(http.createServer(app))
+const socket = io(http.createServer(app));
+// app.use(socketFileUpload)
+
     console.log('User connected!');
     
     socket.on('connection', (sc) => {
