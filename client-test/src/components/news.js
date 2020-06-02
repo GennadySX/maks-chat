@@ -4,7 +4,7 @@ import {Ax} from "../helpers";
 import {Api} from "../globals/Constants";
 
 
-const newsJson = [
+/*const newsJson = [
     {
         _id: 'da65s4d6a54sd3a21sd5a',
         status: true,
@@ -37,7 +37,7 @@ const newsJson = [
         liked: 0,
         viewed: 2745
     }
-]
+]*/
 
 export class News extends Component {
 

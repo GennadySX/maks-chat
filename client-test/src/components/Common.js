@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import $ from 'jquery'
 import {Api, WSList} from "../globals/Constants";
-import openSocket from 'socket.io-client';
 import SocketIOFileUploader from 'socketio-file-upload'
 import axios from "axios";
 //socket

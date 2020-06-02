@@ -1,7 +1,6 @@
 import React from 'react';
 import $ from 'jquery'
 import {Link} from "react-router-dom";
-import axios from 'axios'
 
 //globals
 //import {Api} from '../globals/Constants'
@@ -15,8 +14,6 @@ import {Chatroom} from "../components/temp/chatroom"; // Need for first time wri
 import {Account} from "../components/account";
 import {Friends} from "../components/friends";
 import {Groups} from "../components/groups";
-import {Settings} from "../components/settings";
-import {Api} from "../globals/Constants";
 import {Creator} from "../components/creator";
 import {Invitelist} from "../components/invitelist";
 
@@ -24,7 +21,7 @@ export class ProfilePage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            isBlock: 'common-chat',
+            isBlock: 'friends',
             mess: [],
             data: [],
             createType: '',

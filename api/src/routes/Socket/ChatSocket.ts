@@ -16,6 +16,7 @@ export default class ChatSocket {
         this.socket.on('subscribe', (room:any) => new RoomController().commonInit(room, this.socket));
         this.socket.on('room_send', (room: any, message: any) => new RoomController().newMessage(room, message, this.socket));
         this.socket.on("room", (room: Object | any ) => new RoomController().roomInit(room, this.socket))
+        this.socket.on("room_check_req", (friend_id: Object | any ) => new RoomController().roomCheckByMembers(friend_id, this.socket))
 
     }
 

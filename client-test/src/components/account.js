@@ -4,7 +4,6 @@ import SocketIOFileUploader from 'socketio-file-upload'
 import $ from 'jquery'
 
 //globals
-import {Api} from "../globals/Constants";
 
 const avatar = require('../assets/images/zucker.jpg').default
 

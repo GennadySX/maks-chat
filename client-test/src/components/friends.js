@@ -1,8 +1,5 @@
 import React, {Component} from "react";
 import {DropdownButton, Dropdown} from 'react-bootstrap'
-import {Ax} from "../helpers";
-import {Api} from "../globals/Constants";
-
 
 export class Friends extends Component{
 
@@ -12,7 +9,6 @@ export class Friends extends Component{
             friendlist: null,
         }
         this.socket = this.props.params.ioSocket
-
     }
 
     componentDidMount() {
@@ -21,26 +17,30 @@ export class Friends extends Component{
 
     getFriends = () => {
         this.socket.on('friendList', friends => {
-            console.log('friends list', friends);
+            //console.log('friends list', friends);
             this.setState({friendlist: friends.data})
-
         })
         this.socket.emit('getFriendList')
-       /* Ax.get(Api.friendList).then(res => {
-            console.log('user data', res.data)
-            if (res.data.status && res.data.status === true) {
-                this.setState({
-                    friendlist: res.data.data
-                })
+    };
+
+    checkRoom(friend, result) {
+        this.socket.on('room_check_res', (room) => {
+            if (room) result(room)
+        })
+
+        this.socket.emit('room_check_req', friend._id);
+    }
+
+
+    openRoom = (friend) => {
+        friend.type = 'user'
+        this.checkRoom(friend, (res) => {
+            console.log('room is exists > ', res)
+            if (res && res.data && res.data.length) {
+                this.props.dispatecher({data: friend, isBlock: 'chatroom'})
             }
-        })*/
-    }
-
-
-    openRoom = (room) => {
-        room.type = 'user'
-        this.props.dispatecher({data: room, isBlock: 'chatroom'})
-    }
+        })
+    };
 
     render() {
         return (
@@ -48,17 +48,15 @@ export class Friends extends Component{
             <div className="friends-block col-12 rounded">
                 <div className="header bg-warning rounded p-3 ">
                     <h2 className="title">Друзья</h2>
-
                 </div>
                 <div className="user-list col-12 p-0">
                     <ul className="list-box col-12 p-0">
                         {this.state.friendlist.map((user, index) => (
-
                         <li className="user d-flex justify-content-between p-2 mb-0" key={index}>
                             <div className="left-block-f d-flex p-2" >
                                 <img src={require('../assets/images/bg-01.jpg').default} alt="1" className="avatar"/>
                                 <div className="user-header ml-5 d-block">
-                                    <p className="name ">{user.login}</p>
+                                    <p className="name ">{user.firstName} {user.lastName}</p>
                                     <button className="message" onClick={() => this.openRoom(user)}>Write message</button>
                                 </div>
                             </div>
@@ -66,6 +64,7 @@ export class Friends extends Component{
                                 <DropdownButton id="dropdown-basic-button dropdown-variants-Warning" variant={'warning'} title="">
                                     <Dropdown.Item href="#/action-1"></Dropdown.Item>
                                     <Dropdown.Item href="#/action-2">Пригласить в группу</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-2">Добавить в друзей</Dropdown.Item>
                                     <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
                                 </DropdownButton>
                             </div>
