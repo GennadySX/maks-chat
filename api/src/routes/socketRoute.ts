@@ -1,20 +1,30 @@
 import ChatSocket from "./Socket/ChatSocket";
-import ZakSocket from "./Socket/ZakSocket";
-
+import * as io from 'socket.io'
+import ProfileSocket from "./Socket/ProfileSocket";
+import {SocketMiddleware} from "@config/SocketMiddleware";
+import UploaderSocket from "./Socket/UploaderSocket";
+import UsersSocket from "./Socket/UsersSocket";
 export default class SocketRoute {
-    io: any;
-    constructor(props: any) {
-        this.io = props
+    ioSocket: any;
+    constructor(app: any) {
+        this.ioSocket = io.listen(app)
     }
 
-
-
-    public run = (io: any, client = null) => {
-        io.on('connection', (socket: any) => {
+    public run () {
+        this.ioSocket.use(SocketMiddleware).on('connection', (socket: any) => {
             //Так и можешь вызвать но используй константы emit-ов
-            new ZakSocket(io, socket).run()
+            new ProfileSocket(this.ioSocket, socket).run()
+            new UsersSocket(this.ioSocket, socket).run()
+            new ChatSocket(this.ioSocket, socket).run()
+            new UploaderSocket(this.ioSocket, socket).run()
 
-            socket.on('chat', (msg: any) => new ChatSocket(socket, msg).chat)
+
+
+        })
+
+        //when user disconnected from NET
+        this.ioSocket.on("disconnection", (socketUser: any) => {
+
         })
     }
 }

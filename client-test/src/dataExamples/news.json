@@ -1,0 +1,48 @@
+[
+  {
+    "_id": "da65s4d6a54sd3a21sd5a",
+    "status": true,
+    "title": "Eldorado prestavlyaet",
+    "data": [
+      {
+        "name": "Samsung Galaxy S20",
+        "cost": 5465,
+        "gallery": [
+          {
+            "img": "public/gallery/eldorado/inaskd.jpg"
+          },
+          {
+            "img": "public/gallery/eldorado/inaskd.jpg"
+          },
+          {
+            "img": "public/gallery/eldorado/inaskd.jpg"
+          },
+          {
+            "img": "public/gallery/eldorado/inaskd.jpg"
+          }
+        ]
+      },
+      {
+        "name": "Samsung Galaxy A5",
+        "cost": 75465,
+        "gallery": [
+          {
+            "img": "public/gallery/eldorado/isnaskd.jpg"
+          },
+          {
+            "img": "public/gallery/eldorado/isnaskd.jpg"
+          }
+        ],
+        "text": "desa ashdkajsd akjsd akjsdh ajshdgye eury sndb hasdkajsdhba shd asjdha sdygaosd",
+        "source": [
+          {
+            "item": "/public/documentation.pdf"
+          }
+        ]
+      }
+    ],
+    "createdAt": "2020-02-02 18:10",
+    "liked": 0,
+    "viewed": 2745
+  }
+]

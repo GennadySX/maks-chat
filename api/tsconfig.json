@@ -32,7 +32,7 @@
         "src/database/migrations/*"
       ],
       "@const/*": [
-        "src/globals/Constants/*"
+        "src/Constants/*"
       ]
     },
     "types": [

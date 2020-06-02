@@ -1,0 +1,64 @@
+.chat-block
+  height: inherit
+  .left-block-c
+    background: #2e3133
+    height: 100%
+    border-radius: 10px
+    .header
+      padding: 10px
+      background: #2e3133
+      box-shadow: 0 3px 2px rgba(103, 106, 18, 0.7)
+      border-radius: 10px 10px 0 0
+      .title-room
+        font-size: 1.4rem
+        color: #fff3cd
+        font-weight: bold
+    .chat-board
+      margin-top: 5px
+      ul
+        padding: 7px
+        height: 700px
+        &::-webkit-scrollbar
+          display: none
+        li
+          padding-left: 7px
+          padding-right: 7px
+          &:last-child
+            margin-bottom: 25px
+          p
+            display: inline-block
+            padding: 10px
+            padding-bottom: 3px
+            padding-top: 3px
+            margin-bottom: 7px
+            border-radius: 5px
+        .from
+          width: 50%
+          margin-top: 10px
+          p
+            width: auto !important
+            text-align: left
+            color: #fff3cd
+            background: #0069d9
+        .to
+          text-align: right
+          p
+            color: #fff3cd
+            background: #6c757d
+
+    .pen-panel
+      border-radius: 0 0 10px 10px
+      background: rgba(68, 68, 70, 0.9)
+      padding-top: 10px
+      padding-bottom: 5px
+      box-shadow: 0 -5px 15px #2a2e33
+      .form-group
+        display: flex
+        justify-content: space-between
+        textarea
+          width: 82%
+          resize: vertical
+        button.send
+          width: 15%
+          background: #69cd71
+          color: white

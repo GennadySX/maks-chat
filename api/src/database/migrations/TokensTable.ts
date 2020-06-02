@@ -12,10 +12,10 @@ const UserAgent = createSchema(
 
 const TokenSchema = createSchema(
     {
-        user_id: Type.objectId({required: true}),
+        user_id: Type.objectId({required: true, ref: "User"}),
         token: Type.string({required: true}),
         expireAfter: Type.date({default: new Date() as any}),
-        userAgent: Type.schema({required: true}).of(UserAgent),
+        userAgent: Type.schema({required: true}).of(UserAgent)
     },
     {timestamps: {createdAt: true, updatedAt: true}}
 );

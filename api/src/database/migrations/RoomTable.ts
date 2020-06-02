@@ -1,5 +1,5 @@
 import {createSchema, Type} from "ts-mongoose";
-import {RoomConst} from "@const/Model/Room";
+import {RoomConst} from "@const/Model/RoomConst";
 
 const Members = createSchema(
     {
@@ -12,10 +12,10 @@ const Members = createSchema(
 
 const Chat = createSchema(
     {
-        type: Type.string({ required: true, enum: RoomConst.chat.type as any}),
+        type: Type.string({ required: true, enum: RoomConst.chat.type as any, default: RoomConst.chat.type[0]}),
         from: Type.objectId({required: true}),
-        to: Type.objectId({required: false}),
-        msg: Type.string({required: true}),
+        to: Type.objectId({required: false} ),
+        text: Type.string({required: true}),
     },
     { _id: true, timestamps: true }
 );
@@ -28,12 +28,14 @@ const Admins = createSchema({
 
 const RoomSchema = createSchema(
     {
-        name: Type.string({ required: false }),
-        avatar: Type.string({ required: true }),
-        type: Type.string({ required: true, enum: RoomConst.type }),
-        chat: Type.schema({ required: true }).of(Chat),
-        members: Type.schema({ required: true }).of(Members),
-        admins: Type.schema({ required: true }).of(Admins),
+        name: Type.string({ required: false, unique: true }),
+        avatar: Type.string({ required: false }),
+        type: Type.string({ required: true, enum: RoomConst.type, default: RoomConst.type[0] }),
+        messageList: [Type.schema({ required: true }).of(Chat)],
+        members: [
+            Type.schema({ required: true }).of(Members)
+        ],
+        admins: [Type.schema({ required: false }).of(Admins)],
         owner: Type.objectId({ required: true }),
     },
     { timestamps: { createdAt: true, updatedAt: true } }

@@ -1,7 +1,7 @@
 import Model from "@models/Model";
 import {typedModel} from "ts-mongoose";
 
-import {TokensConts} from "@const/Model/Tokens";
+import {TokensConts} from "@const/Model/TokensConst";
 import {TokenSchema} from "@migration/TokensTable";
 
 

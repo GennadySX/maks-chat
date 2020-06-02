@@ -5,8 +5,8 @@ import { Response, SuperTest, Test } from 'supertest';
 import app from '@server';
 import UserDao from '@controllers/User/UserDao.mock';
 import User, { IUser } from '@models/User';
-import { pErr } from '@globals/functions';
-import { paramMissingError } from '@globals/constants';
+import { pErr } from '../util/functions';
+import { paramMissingError } from '@const/constants';
 
 
 describe('Users Routes', () => {

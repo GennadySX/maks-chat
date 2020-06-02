@@ -1,7 +1,7 @@
 //Helpers
 import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
 import { ParamsDictionary } from 'express-serve-static-core';
-import { paramMissingError } from '@globals/constants';
+import { paramMissingError } from '@const/constants';
 
 //Main
 import {post,get, put, file, del, router} from "@config/Router";

@@ -1,6 +1,6 @@
 import Model from "@models/Model";
 import { createSchema, Type, typedModel } from 'ts-mongoose';
-import {RoomConst} from "@const/Model/Room";
+import {RoomConst} from "@const/Model/RoomConst";
 import {RoomSchema} from "@migration/RoomTable";
 
 

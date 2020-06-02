@@ -20,13 +20,9 @@ Mongo.connect();
 
 
 import BaseRouter from './routes';
-import logger from '@globals/Logger';
+import logger from '@config/Logger';
+import {Cors} from "@config/Cors";
 
-const socket = io(http.createServer(app))
-
-    socket.on('connection', (sc) => {
-        console.log('sc is ', sc)
-    })
 
 /************************************************************************************
  *                              Set basic express settings
@@ -41,10 +37,13 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
-// Security
 if (process.env.NODE_ENV === 'production') {
     app.use(helmet());
 }
+
+// Security
+
+
 
 // Add APIs
 app.use('/', BaseRouter);

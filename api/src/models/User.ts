@@ -1,6 +1,6 @@
 import Model from "@models/Model";
 import {createSchema, Type, typedModel} from "ts-mongoose";
-import {UserConts} from "@globals/Constants/Model/User";
+import {UserConts} from "@const/Model/UserConst";
 import {UserSchema} from "@migration/UserTable";
 
 export  interface IUser {
