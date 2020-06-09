@@ -27,7 +27,6 @@ export class Friends extends Component{
         this.socket.on('room_check_res', (room) => {
             if (room) result(room)
         })
-
         this.socket.emit('room_check_req', friend._id);
     }
 
