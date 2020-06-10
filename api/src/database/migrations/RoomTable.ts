@@ -3,7 +3,7 @@ import {RoomConst} from "@const/Model/RoomConst";
 
 const Members = createSchema(
     {
-        user: Type.objectId({ required: true }),
+        user: Type.objectId({ required: true, unique: true }),
         joined: Type.date({default: new Date() as any}),
         invitedBy: Type.objectId({required: false}),
     },
@@ -30,11 +30,9 @@ const RoomSchema = createSchema(
     {
         name: Type.string({ required: false, unique: true }),
         avatar: Type.string({ required: false }),
-        type: Type.string({ required: true, enum: RoomConst.type, default: RoomConst.type[0] }),
+        type: Type.string({ required: false, enum: RoomConst.type, default: RoomConst.type[0] }),
         messageList: [Type.schema({ required: true }).of(Chat)],
-        members: [
-            Type.schema({ required: true }).of(Members)
-        ],
+        members: [Type.objectId({ required: true })],
         admins: [Type.schema({ required: false }).of(Admins)],
         owner: Type.objectId({ required: true }),
     },

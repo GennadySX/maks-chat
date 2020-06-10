@@ -15,22 +15,15 @@ class Chatroom extends Component {
         super(props);
         this.state = {
             title: (this.props.roomdata.name) ? this.props.roomdata.name : `${this.props.roomdata.friend.firstName} ${this.props.roomdata.friend.lastName}`,
-            messagelist: (this.props.roomdata.message) ? this.props.roomdata.message : [],
+            messageList: (this.props.roomdata.message) ? this.props.roomdata.message : [],
             message: '',
             user: this.props.user,
             friend: this.props.roomdata.friend || {},
-            data: this.props.roomdata.data || {}
+            room: this.props.roomdata.data || {},
+            type: 'private'
         }
-        //console.log('props data is', this.props)
+        console.log('props data is', this.props)
         socket = this.props.params.ioSocket
-    }
-
-
-    componentDidMount() {
-        /*if (socket) {
-            this.socketStart()
-        }*/
-        console.log('state values', this.state)
     }
 
     socketStart() {
@@ -42,49 +35,41 @@ class Chatroom extends Component {
             if (msg.from !== _.state.user._id && msg.room === _.state.title) {
                 let messages = _.state.messagelist
                 messages.push({from: "him", to: "me", text: msg.text, created_at: new Date()})
-                _.setState({messagelist: messages})
+                _.setState({messageList: messages})
                 $('.messageList').animate({scrollTop: $(document).height() * 50}, 'slow');
             }
         });
     }
 
-
-    sendMess = () => {
-
-        const nmessage = {
-            from: this.state.user._id,
-            type: "text",
-            to: this.state.friend._id,
-            text: this.state.message,
-        }
-
-        socket.emit(WSList.send, nmessage);
-        socket.emit('dateTest', nmessage);
-        let mes = this.state.messagelist
-        mes.push(nmessage)
-        this.setState({messagelist: mes, message: ""})
-        $('.messageList').animate({scrollTop: $(document).height() * 50}, 'slow');
-
-    }
-
-    sendIt = () => {
-        let instane = this.state.data
-        instane.avatar = avatar
-        instane.name = this.state.title
-        instane.members = [
-            {user_id: this.state.user._id},
-            {user_id: this.props.roomdata._id}
-        ]
-
-        console.log('state data of user', instane)
-        axios.post(Api.crud.create + this.state.type, instane).then(res => {
-            console.log('created is ', res.data)
-            if (res.data && res.data.type) {
-                this.props.states(this.state.type)
-            }
-
+    roomInit() {
+        this.socket.on('room_created', (room) => {
+            console.log('room created in and get react ', room)
+            this.setState({room: room}, () => this.sendMess())
         })
     }
+
+
+
+
+
+    sendMess = () => {
+        const {messageList, room, friend, user, message, type} = this.state,
+            nmessage = {
+                from: user._id,
+                type: "text",
+                to: friend._id,
+                text: message,
+            }
+        if (room && room._id) {
+            socket.emit(WSList.send, nmessage);
+            socket.emit('dateTest', nmessage);
+            this.setState({messageList: [...messageList, nmessage], message: ""})
+            $('.messageList').animate({scrollTop: $(document).height() * 50}, 'slow');
+        } else {
+            socket.emit(WSList.room_create, {user: friend._id});
+        }
+    }
+
 
     render() {
         return (
@@ -99,7 +84,7 @@ class Chatroom extends Component {
                     </div>
                     <div className="chat-board mb-5 ">
                         <ul className='overflow-auto  messageList'>
-                            {(this.state.messagelist) ? this.state.messagelist.map((message, index) => (
+                            {(this.state.messageList) ? this.state.messageList.map((message, index) => (
                                 <li className={(message.from !== this.state.user._id) ? "from" : "to "} key={index}>
                                     <p>{message.text}</p>
                                 </li>
@@ -108,15 +93,15 @@ class Chatroom extends Component {
                     </div>
                     <div className="pen-panel pos-absolute bottom-0 col-12 ">
                         <div className="form-group d-flex justify-content-between m-0 mb-1">
-                            <input name="" id="" cols="20" rows="1"
-                                   value={this.state.message}
-                                   onChange={(e) => this.setState({message: $(e.target).val()})}
-                                   className="form-control col-10 m-text"
-                                   placeholder={'Сообщение...'}
-                                   onKeyDown={(e) => {
-                                       if (e.keyCode === 13 && this.state.message.trim(' ') !== '') this.sendMess();
-                                   }}
-                            ></input>
+                            <input  cols="20" rows="1"
+                                value={this.state.message}
+                                onChange={(e) => this.setState({message: $(e.target).val()})}
+                                className="form-control col-10 m-text"
+                                placeholder={'Сообщение...'}
+                                onKeyDown={(e) => {
+                                    if (e.keyCode === 13 && this.state.message.trim(' ') !== '') this.sendMess();
+                                }}
+                            />
                             <button className="btn  send" onClick={() => {
                                 if (this.state.message.trim(' ') !== '') this.sendMess()
                             }}>Отправить

@@ -57,6 +57,7 @@ const WSList = {
     receive: "message",
     subscribe: "subscribe",
     unsubscribe: "unsubscribe",
+    room_create: "room_create"
 
 }
 

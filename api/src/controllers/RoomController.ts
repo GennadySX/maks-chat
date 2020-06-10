@@ -22,7 +22,7 @@ export default class RoomController extends Controller {
             } else {
                 super.create({
                         name: room,
-                        members: {user: socket.user_id},
+                        members: [{user: socket.user_id}],
                         chat: {
                             from: socket.user_id,
                             text: "Hey"
@@ -73,9 +73,25 @@ export default class RoomController extends Controller {
 
 
     public async roomCheckByMembers(friend_id: any, socket: any): Promise<void> {
-        this.get({members: [{user: friend_id}, {user: socket.user_id}]}, (res:any) => {
-            console.log('res is', res)
-            socket.emit('room_check_res', res)
+
+        new Room().find({members: { "$in" :  [ friend_id, socket.user_id]}, type: 'user'}, (err: Error, data: any) => {
+            console.log('res is', data)
+            socket.emit('room_check_res', data, err)
+        })
+
+        // this.get({members: [{user: friend_id}, {user: socket.user_id}]}, (res:any) => {
+        //
+        // })
+    }
+
+
+
+    public async room_create(member: any, socket: any): Promise<void> {
+        super.create({
+            members: [socket.user_id, member.user],
+            owner: socket.user_id}, (res:any) => {
+            console.log('room created', res)
+            socket.emit('room_created', res)
         })
     }
 

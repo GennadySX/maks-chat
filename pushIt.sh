@@ -10,8 +10,8 @@ read -p "Commit message: " message
 
 git commit -m "maks-chat --user:$user  :$message"
 
-read  -p "Branch: " branch
+#read  -p "Branch: " branch
 
-read  -p "Role: " role
+#read  -p "Role: " role
 
-git push $branch $role
+git push origin master
