@@ -14,14 +14,14 @@ class Chatroom extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: (this.props.roomdata.name) ? this.props.roomdata.name : `${this.props.roomdata.firstName} ${this.props.roomdata.lastName}`,
+            title: (this.props.roomdata.name) ? this.props.roomdata.name : `${this.props.roomdata.friend.firstName} ${this.props.roomdata.friend.lastName}`,
             messagelist: (this.props.roomdata.message) ? this.props.roomdata.message : [],
             message: '',
             user: this.props.user,
-            friend: this.props.roomdata,
-            data: {}
+            friend: this.props.roomdata.friend || {},
+            data: this.props.roomdata.data || {}
         }
-        console.log('props data is', this.props)
+        //console.log('props data is', this.props)
         socket = this.props.params.ioSocket
     }
 
@@ -30,6 +30,7 @@ class Chatroom extends Component {
         /*if (socket) {
             this.socketStart()
         }*/
+        console.log('state values', this.state)
     }
 
     socketStart() {

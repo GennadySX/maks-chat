@@ -43,7 +43,7 @@ class Register extends React.Component {
 
     userLogin = (e) => {
         e.preventDefault()
-        console.log('login send data', this.state)
+        //console.log('login send data', this.state)
         axios.post(Api.login, this.state).then(res => {
             console.log('user data ', res.data)
                 if (res.data.status && res.data.user && res.data.token ) {
@@ -59,7 +59,7 @@ class Register extends React.Component {
 
     userRegister = (e) => {
         e.preventDefault()
-         console.log('register', Api.register)
+         console.log('register', this.state)
         axios.post(Api.register, this.state).then(res => {
             console.log('res data', res.data)
             if (res.data.status) {

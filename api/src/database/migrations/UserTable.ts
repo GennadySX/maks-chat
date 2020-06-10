@@ -43,9 +43,9 @@ const UserSchema = createSchema(
     {
         firstName: Type.string({ required: false }),
         lastName: Type.string({ required: false }),
-        phone: Type.string({ required: false, unique: true }),
+        phone: Type.string({ required: false }),
         email: Type.string({ required: true, unique: true }),
-        login: Type.string({ required: true }),
+        login: Type.string({ required: true, unique: true }),
         password: Type.string({ required: true }),
         avatar: Type.string({ required: false }),
         aboutMe: Type.string({ required: false }),

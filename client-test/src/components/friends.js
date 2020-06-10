@@ -27,6 +27,7 @@ export class Friends extends Component{
         this.socket.on('room_check_res', (room) => {
             if (room) result(room)
         })
+
         this.socket.emit('room_check_req', friend._id);
     }
 
@@ -35,9 +36,10 @@ export class Friends extends Component{
         friend.type = 'user'
         this.checkRoom(friend, (res) => {
             console.log('room is exists > ', res)
-            if (res && res.data && res.data.length) {
-                this.props.dispatecher({data: friend, isBlock: 'chatroom'})
-            }
+                const c  = res.data
+            //if (c.data && c.data.length)
+                this.props.dispatecher({data: {friend}, isBlock: 'chatroom'})
+
         })
     };
 
