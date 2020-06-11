@@ -20,9 +20,9 @@ export default class AuthController extends Controller {
         if (req.body && (req.body.email) && req.body.password) {
             req.body.password = Bcrypt.hashSync(req.body.password, 10)
         }
-        new User().create(req.body, (data: any, reply: any) => {
+        new User().create(req.body, (err: Error, data: any, reply: any) => {
             console.log('data is', data);
-            (data.err) ? res.json({status: false, err: data.err})
+            (!data) ? res.json({status: false, err: data.err})
                 : res.json({status: true, user: data})
         })
     }

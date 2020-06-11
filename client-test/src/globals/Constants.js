@@ -53,9 +53,10 @@ const WSList = {
     ws: ws,
     commonChat:  "commonChat",
     commonEvent:  "common-event",
-    send: "send",
-    receive: "message",
+    send: "room_send",
+    receive: "room_receive",
     subscribe: "subscribe",
+    groupSubscribe: "group_subscribe",
     unsubscribe: "unsubscribe",
     room_create: "room_create"
 

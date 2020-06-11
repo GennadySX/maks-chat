@@ -4,11 +4,11 @@
 
 
 export const SocketOnConst = {
-    file: "file",
-    users: "users_all",
+    file:       "file",
+    users:      "users_all",
     user: {
         account: {
-            _ : "user_account",
+            _: "user_account",
             update: "user_accout_update",
             avatar: "user_account_avatar"
         },
@@ -18,12 +18,8 @@ export const SocketOnConst = {
             update: "user_friend_update",
             block: "user_friend_update",
         },
-        invite: {
-
-        },
-        groups: {
-
-        },
+        invite: {},
+        groups: {},
         password: {
             update: "user_password_update",
             forgot: "user_password_forgot"
@@ -42,8 +38,22 @@ export const SocketOnConst = {
             get: "chat_get",
             getTypes: "chat_get_type",
         }
-
-
+    },
+    group: {
+        get: "group_get",
+        create:     "group_create",
+        update:     "group_update",
+        delete:     "group_delete",
+        members:    "group_members",
+        type:       "group_type",
+        chat: {
+            push:       "group_client_push",
+            send:       "group_client_send",
+            receive:    "group_client_receive",
+            pop:        "group_client_pop",
+            delete:     "group_client_delete",
+            get:        "group_chat_get",
+        },
     },
     tokens: {},
 

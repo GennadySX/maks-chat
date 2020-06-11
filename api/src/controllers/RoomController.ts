@@ -3,8 +3,6 @@
  */
 import Controller from "@controllers/Controller";
 import Room from "@models/Room";
-import {SocketEmits} from "@const/Socket/SocketEmits";
-import {RoomConst} from "@const/Model/RoomConst";
 
 export default class RoomController extends Controller {
     constructor() {
@@ -12,84 +10,45 @@ export default class RoomController extends Controller {
     }
 
 
-    //commonInit
-    public commonInit(room: string, socket: any) {
-        super.getOne({name: room}, (commonChat: object | any) => {
-            if (commonChat && commonChat.data) {
-                console.log('room is ', room)
-                socket.join(room)
-                socket.emit(SocketEmits.commonChatData, commonChat.data)
-            } else {
-                super.create({
-                        name: room,
-                        members: [{user: socket.user_id}],
-                        chat: {
-                            from: socket.user_id,
-                            text: "Hey"
-                        },
-                        owner: socket.user_id
-                    }, (created: any) =>
-                        (created.data) ? console.log('common chat is ', created.data) : console.log('room not created by error ', created.error)
-                )
-            }
-        })
-    }
-
-    public roomInit(room: string, socket: any) {
-        super.getOne({name: room}, (roomChat: object | any) => {
-            if (roomChat && roomChat.data) {
-                console.log('room is ', room)
-                socket.join(room)
-                socket.emit(SocketEmits.commonChatData, roomChat.data)
-            } else {
-                super.create({
-                        name: room,
-                        type: RoomConst.type[1], // type as group for common chat
-                        members: {user: socket.user_id},
-                        chat: {
-                            from: socket.user_id,
-                            text: "Hey"
-                        },
-                        owner: socket.user_id
-                    }, (created: any) =>
-                        (created.data) ? console.log('common chat is ', created.data) : console.log('room not created by error ', created.error)
-                )
-            }
-        })
-    }
-
-
-    newMessage(room: object | any, message: object | any, socket: any) {
+    public newMessage(room: object | any, message: object | any, socket: any) {
+        // console.log('message is', message)
+        // console.log('room is', room)
         super.update(room, {"$push": {"messageList": message}}, (roomData: any) => {
-            if (roomData.data) {
+            roomData.data ?
                 super.getLast(room, 'messageList', (lastMessage: any) =>
-                    socket.broadcast.emit("message", lastMessage && lastMessage.data ? lastMessage.data : null)
-                )
-            } else {
-                console.log('Error  updated message list ', roomData.error)
-            }
+                    socket.broadcast.emit("room_receive", lastMessage && lastMessage.data ? lastMessage.data : null))
+                : console.log('Error  updated message list ', roomData.error)
         })
     }
 
 
     public async roomCheckByMembers(friend_id: any, socket: any): Promise<void> {
-
-        new Room().find({members: { "$in" :  [ friend_id, socket.user_id]}, type: 'user'}, (err: Error, data: any) => {
-            console.log('res is', data)
-            socket.emit('room_check_res', data, err)
-        })
-
-        // this.get({members: [{user: friend_id}, {user: socket.user_id}]}, (res:any) => {
-        //
-        // })
+        //console.log('friend id for room ', friend_id)
+        new Room().findOne({
+                "$or": [
+                    {members: [friend_id, socket.user_id]},
+                    {members: [socket.user_id, friend_id]}
+                ]
+            },(err: Error, data: any) => {
+               // console.log('friend room is', data)
+                 !data ?
+                     this.create(friend_id, socket).then(() => this.roomCheckByMembers(friend_id, socket))
+                     : this.join(data, err, socket)
+            }
+        )
     }
 
 
+    protected join(room: any, err: Error, socket: any) {
+        socket.join(room._id)
+        socket.emit('room_check_res', room, err)
+    }
 
-    public async room_create(member: any, socket: any): Promise<void> {
+    async create(member: any, socket: any): Promise<void> {
         super.create({
-            members: [socket.user_id, member.user],
-            owner: socket.user_id}, (res:any) => {
+            members: [socket.user_id, member],
+            owner: socket.user_id
+        }, (res: any) => {
             console.log('room created', res)
             socket.emit('room_created', res)
         })

@@ -17,6 +17,10 @@ export default class UserSocket {
             new UserController().getUsers(this.socket)
         )
 
+        this.socket.on('user_data', (tokenClient: Object | any) => new UserController().getUser(tokenClient, this.socket))
+        this.socket.on("token", (msg:any) => new UserController().getIt(msg, this.socket))
+
+
         this.socket.on("inviteList", () =>
             new UserController().getInviteList(this.socket)
         )
@@ -27,6 +31,10 @@ export default class UserSocket {
 
         //destroy
 
+
+        //update
+        this.socket.on("user_account",(userData: Object | any) => new UserController().accoutUpdate(userData, this.socket))
+        this.socket.on("addFriend", (userData: Object | any ) => new UserController().addFriend(userData, this.socket))
 
     }
 }

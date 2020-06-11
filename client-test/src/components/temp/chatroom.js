@@ -15,59 +15,41 @@ class Chatroom extends Component {
         super(props);
         this.state = {
             title: (this.props.roomdata.name) ? this.props.roomdata.name : `${this.props.roomdata.friend.firstName} ${this.props.roomdata.friend.lastName}`,
-            messageList: (this.props.roomdata.message) ? this.props.roomdata.message : [],
+            messageList: (this.props.roomdata.room.messageList) ? this.props.roomdata.room.messageList : [],
             message: '',
             user: this.props.user,
             friend: this.props.roomdata.friend || {},
-            room: this.props.roomdata.data || {},
+            room: this.props.roomdata,
             type: 'private'
         }
-        console.log('props data is', this.props)
+        console.log('props data is', this.props.roomdata.room)
         socket = this.props.params.ioSocket
     }
 
+    componentDidMount() {
+        this.socketStart()
+    }
+
     socketStart() {
-        socket.emit(WSList.subscribe, this.state.title)
         $('.messageList').animate({scrollTop: $(document).height() * 50}, 'slow');
         socket.on(WSList.receive, (msg, _ = this) => {
             console.log('got message', msg)
-
-            if (msg.from !== _.state.user._id && msg.room === _.state.title) {
-                let messages = _.state.messagelist
-                messages.push({from: "him", to: "me", text: msg.text, created_at: new Date()})
-                _.setState({messageList: messages})
+                _.setState({messageList: [...this.state.messageList, msg[0]]})
                 $('.messageList').animate({scrollTop: $(document).height() * 50}, 'slow');
-            }
         });
     }
-
-    roomInit() {
-        this.socket.on('room_created', (room) => {
-            console.log('room created in and get react ', room)
-            this.setState({room: room}, () => this.sendMess())
-        })
-    }
-
-
-
-
 
     sendMess = () => {
         const {messageList, room, friend, user, message, type} = this.state,
             nmessage = {
-                from: user._id,
+                sender_id: user._id,
                 type: "text",
-                to: friend._id,
                 text: message,
             }
-        if (room && room._id) {
-            socket.emit(WSList.send, nmessage);
-            socket.emit('dateTest', nmessage);
-            this.setState({messageList: [...messageList, nmessage], message: ""})
-            $('.messageList').animate({scrollTop: $(document).height() * 50}, 'slow');
-        } else {
-            socket.emit(WSList.room_create, {user: friend._id});
-        }
+        console.log('get state this room', this.state.room)
+        socket.emit(WSList.send, {_id: room._id}, nmessage);
+        this.setState({messageList: [...messageList, nmessage], message: ""})
+        $('.messageList').animate({scrollTop: $(document).height() * 50}, 'slow');
     }
 
 
@@ -84,23 +66,23 @@ class Chatroom extends Component {
                     </div>
                     <div className="chat-board mb-5 ">
                         <ul className='overflow-auto  messageList'>
-                            {(this.state.messageList) ? this.state.messageList.map((message, index) => (
-                                <li className={(message.from !== this.state.user._id) ? "from" : "to "} key={index}>
+                            { this.state.messageList.map((message, index) => (
+                                <li className={(message.sender_id !== this.state.user._id) ? "from" : "to "} key={index}>
                                     <p>{message.text}</p>
                                 </li>
-                            )) : null}
+                            )) }
                         </ul>
                     </div>
                     <div className="pen-panel pos-absolute bottom-0 col-12 ">
                         <div className="form-group d-flex justify-content-between m-0 mb-1">
-                            <input  cols="20" rows="1"
-                                value={this.state.message}
-                                onChange={(e) => this.setState({message: $(e.target).val()})}
-                                className="form-control col-10 m-text"
-                                placeholder={'Сообщение...'}
-                                onKeyDown={(e) => {
-                                    if (e.keyCode === 13 && this.state.message.trim(' ') !== '') this.sendMess();
-                                }}
+                            <input cols="20" rows="1"
+                                   value={this.state.message}
+                                   onChange={(e) => this.setState({message: $(e.target).val()})}
+                                   className="form-control col-10 m-text"
+                                   placeholder={'Сообщение...'}
+                                   onKeyDown={(e) => {
+                                       if (e.keyCode === 13 && this.state.message.trim(' ') !== '') this.sendMess();
+                                   }}
                             />
                             <button className="btn  send" onClick={() => {
                                 if (this.state.message.trim(' ') !== '') this.sendMess()
