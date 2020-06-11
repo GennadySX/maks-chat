@@ -46,8 +46,8 @@ class Chatroom extends Component {
                 type: "text",
                 text: message,
             }
-        console.log('get state this room', this.state.room)
-        socket.emit(WSList.send, {_id: room._id}, nmessage);
+        console.log('get state this room', this.state.room.room._id)
+        socket.emit(WSList.send, {_id: room.room._id}, nmessage);
         this.setState({messageList: [...messageList, nmessage], message: ""})
         $('.messageList').animate({scrollTop: $(document).height() * 50}, 'slow');
     }

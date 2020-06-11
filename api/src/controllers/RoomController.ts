@@ -16,7 +16,7 @@ export default class RoomController extends Controller {
         super.update(room, {"$push": {"messageList": message}}, (roomData: any) => {
             roomData.data ?
                 super.getLast(room, 'messageList', (lastMessage: any) =>
-                    socket.broadcast.emit("room_receive", lastMessage && lastMessage.data ? lastMessage.data : null))
+                    socket.broadcast.to(room._id).emit("room_receive", lastMessage && lastMessage.data ? lastMessage.data : null))
                 : console.log('Error  updated message list ', roomData.error)
         })
     }
