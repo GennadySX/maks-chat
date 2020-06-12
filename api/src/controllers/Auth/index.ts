@@ -30,8 +30,9 @@ export default class AuthController extends Controller {
 
     public async login(req: Request, res: Response, next: NextFunction) {
         if (req.body.email || req.body.login) {
-            const findBy = req.body.email ? {email: req.body.email} : {login: req.body.login}
-            new User().findOne(findBy, (not: Error, user: any) => {
+            //const findBy = req.body.email ? {email: req.body.email} :
+            new User().findOne({login: req.body.login}, (not: Error, user: any) => {
+                console.log('login user is', user)
                 if (user) {
                     if (Bcrypt.compareSync(req.body.password, user.password)) {
                         const token = uid(70);

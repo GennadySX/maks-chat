@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-
-
-import Header from './Header';
-
-import Footer from "./Footer";
+import {ProfilePage as Profile} from "../../pages/Profile";
 
 const LayoutContent = (props) => {
+
     return <React.Fragment>
-        <Header />
+            <Profile dispatcher={(e) => console.log('page to pass', e)} history={props.history} location={props.location} match={props.match} {...props.children.props}>
                 {props.children}
-        <Footer />
+            </Profile>
     </React.Fragment>
 }
 
@@ -20,8 +17,15 @@ class Layout extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-        };
+        this.state = {};
+
+    }
+
+
+    componentDidMount() {
+        if (this.props.location.pathname === "/profile") {
+            window.location.href = '/profile/common-chat'
+        }
     }
 
     render() {

@@ -11,8 +11,14 @@ class Chat extends Component {
         }
     }
 
+
+
+    componentDidMount() {
+        console.log('chat props ', this.props)
+    }
+
     chatSet = (room) => {
-        // console.log('room id ', room)
+
         this.props.dispatecher({isBlock: 'chatroom', data: room})
     }
 

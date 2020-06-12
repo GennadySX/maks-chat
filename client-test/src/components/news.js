@@ -49,7 +49,7 @@ export class News extends Component {
     }
 
     componentDidMount() {
-        this.getFriends()
+       // this.getFriends()
     }
 
     getFriends = () => {

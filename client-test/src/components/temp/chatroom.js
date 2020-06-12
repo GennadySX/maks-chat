@@ -1,35 +1,43 @@
 import React, {Component} from "react";
 import $ from 'jquery'
-import {Api, WSList} from "../../globals/Constants";
+import { WSList} from "../../globals/Constants";
 
-import axios from "axios";
 //socket
 let socket = null
 
 
-const avatar = require('../../assets/images/bg-01.jpg').default
 
 class Chatroom extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
-            title: (this.props.roomdata.name) ? this.props.roomdata.name : `${this.props.roomdata.friend.firstName} ${this.props.roomdata.friend.lastName}`,
-            messageList: (this.props.roomdata.room.messageList) ? this.props.roomdata.room.messageList : [],
+            title: '',
+            messageList: [],
             message: '',
             user: this.props.user,
-            friend: this.props.roomdata.friend || {},
-            room: this.props.roomdata,
+            friend: {},
+            room: null,
             type: 'private'
         }
-        console.log('props data is', this.props.roomdata.room)
         socket = this.props.params.ioSocket
     }
-
     componentDidMount() {
         this.socketStart()
+        this.setIs()
     }
 
+    setIs() {
+        const lstore = JSON.parse(localStorage.getItem('chatroom'))
+        this.setState({
+            title: (lstore.room.name) ? lstore.room.name : `${lstore.friend.firstName} ${lstore.friend.lastName}`,
+            messageList: (lstore.room.messageList) ? lstore.room.messageList : [],
+            message: '',
+            user: this.props.user,
+            friend: lstore.friend || {},
+            room: lstore.room,
+            type: 'private'
+        })
+    }
     socketStart() {
         $('.messageList').animate({scrollTop: $(document).height() * 50}, 'slow');
         socket.on(WSList.receive, (msg, _ = this) => {
@@ -38,16 +46,15 @@ class Chatroom extends Component {
                 $('.messageList').animate({scrollTop: $(document).height() * 50}, 'slow');
         });
     }
-
     sendMess = () => {
-        const {messageList, room, friend, user, message, type} = this.state,
+        const {messageList, room,  user, message} = this.state,
             nmessage = {
                 sender_id: user._id,
                 type: "text",
                 text: message,
             }
-        console.log('get state this room', this.state.room.room._id)
-        socket.emit(WSList.send, {_id: room.room._id}, nmessage);
+        console.log('get state this room', this.state.room._id)
+        socket.emit(WSList.send, {_id: room._id}, nmessage);
         this.setState({messageList: [...messageList, nmessage], message: ""})
         $('.messageList').animate({scrollTop: $(document).height() * 50}, 'slow');
     }

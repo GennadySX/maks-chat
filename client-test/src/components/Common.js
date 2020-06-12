@@ -18,6 +18,7 @@ class CommonChat extends Component {
             user: JSON.parse(localStorage.getItem('user')),
             data: {},
         }
+
         this.socket = this.props.params.ioSocket
         this.socketFile = this.socket ? new SocketIOFileUploader(this.socket) : null;
 
@@ -25,7 +26,7 @@ class CommonChat extends Component {
 
 
     componentDidMount() {
-        //console.log('common props ', this.state.user)
+
         if (this.socket) {
             this.commonInit();
             this.socketStart()

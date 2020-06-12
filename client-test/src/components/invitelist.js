@@ -16,7 +16,7 @@ export class Invitelist extends Component{
     }
 
     componentDidMount() {
-        this.getFriends()
+        //this.getFriends()
     }
 
 

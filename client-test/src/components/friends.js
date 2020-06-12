@@ -12,29 +12,28 @@ export class Friends extends Component {
     }
 
     componentDidMount() {
-        this.getFriends()
+        //console.log('friends props', this.props)
+         this.getFriends()
     }
 
-    getFriends = () => {
-        this.socket.on('friendList', friends => {
-            //console.log('friends list', friends);
-            this.setState({friendlist: friends.data})
+    getFriends = async () => {
+       await this.socket.on('friendList', friends => {
+            this.setState({friendlist: friends.data}, () => {
+                console.log('friend list is', this.state.friendlist)
+            })
         })
         this.socket.emit('getFriendList')
     };
 
-    checkRoom(friend, result) {
-
-    }
-
 
     openRoom = (friend) => {
-        console.log('friend data', friend)
+        //console.log('friend data', friend)
         friend.type = 'user'
 
         this.socket.on('room_check_res', (room) => {
             console.log('room is exists > ', room)
-            if (room) this.props.dispatecher({data: {friend, room}, isBlock: 'chatroom'})
+            localStorage.setItem('chatroom', JSON.stringify({friend, room}))
+            if (room) this.props.history.push('/profile/chatroom',{data: {friend, room}, isBlock: 'chatroom'})
         })
 
         this.socket.emit('room_check_req', friend._id);
@@ -42,7 +41,7 @@ export class Friends extends Component {
 
     render() {
         return (
-            (this.state.friendlist) ?
+            this.state.friendlist  ?
                 <div className="friends-block col-12 rounded">
                     <div className="header bg-warning rounded p-3 ">
                         <h2 className="title">Друзья</h2>

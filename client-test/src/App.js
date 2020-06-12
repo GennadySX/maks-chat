@@ -9,11 +9,11 @@ import {Api} from "./globals/Constants";
 
 function withLayout(WrappedComponent, route, params = null) {
     return class extends React.Component {
+
         render() {
-            return (route === '/chat') ?
+            return (route.indexOf('profile') > 0) ?
                 <Layout>
-                    <WrappedComponent
-                        params={params ? params : null}/>
+                    <WrappedComponent user={JSON.parse(localStorage.getItem('user'))} params={params ? params : null}/>
                 </Layout>
                 : <WrappedComponent
                     params={params ? params : null}/>
@@ -37,8 +37,6 @@ class App extends Component {
 
             token: token
         }
-
-
     }
 
     render() {
@@ -47,8 +45,7 @@ class App extends Component {
                 <Router>
                     <Switch>
                         {routes.map((route, idx) =>
-                            <Route path={route.path}
-                                   component={withLayout(route.component, route.path, this.state)} key={idx}/>
+                            <Route path={route.path} component={withLayout(route.component, route.path, this.state)} key={idx}/>
                         )}
                     </Switch>
                 </Router>

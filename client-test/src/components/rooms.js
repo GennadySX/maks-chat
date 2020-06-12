@@ -18,8 +18,7 @@ export class Rooms extends Component{
     }
 
     componentDidMount() {
-        console.clear()
-        this.getChatHistoryByRoom()
+//        console.clear()
     }
 
     getChatHistoryByRoom = () => {

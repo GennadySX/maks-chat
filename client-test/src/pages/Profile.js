@@ -2,26 +2,11 @@ import React from 'react';
 import $ from 'jquery'
 import {Link} from "react-router-dom";
 
-//globals
-//import {Api} from '../globals/Constants'
-
-
-//components
-import {Chat} from "../components/chat";
-import {CommonChat} from "../components/Common";
-import {News} from "../components/news";
-import {Chatroom} from "../components/temp/chatroom"; // Need for first time write message to friend
-import {Account} from "../components/account";
-import {Friends} from "../components/friends";
-import {Groups} from "../components/groups";
-import {Creator} from "../components/creator";
-import {Invitelist} from "../components/invitelist";
-
 export class ProfilePage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            isBlock: 'friends',
+            isBlock: this.props.location.pathname.replace('/profile/', ''),
             mess: [],
             data: [],
             createType: '',
@@ -29,15 +14,12 @@ export class ProfilePage extends React.Component {
             user: JSON.parse(localStorage.getItem('user')),
             commonChat: []
         }
-
-
     }
 
     componentDidMount() {
-        $('.page-blocks #'+this.state.isBlock).addClass('active')
         this.getRooms()
+        $('.page-blocks #'+this.state.isBlock).addClass('active')
     }
-
 
     getRooms = () => {
         const {ioSocket} = this.props.params
@@ -50,7 +32,10 @@ export class ProfilePage extends React.Component {
         if(page) {
             $('.page-blocks').find('.active').removeClass('active');
             _.addClass('active');
-            this.setState({ isBlock: page})
+            this.setState({ isBlock: page}, () => {
+                this.props.history.push(`/profile/${page}`)
+            })
+
         }
     }
 
@@ -86,7 +71,7 @@ export class ProfilePage extends React.Component {
                                     <li className="cs " id={'chat'}     onClick={(e) => this.activeHandler(e)}><Link to="#" className='link'>Чат</Link></li>
                                     <li className="cs " id={'friends'}  onClick={(e) => this.activeHandler(e)}><Link to="#" className='link'>Друзей</Link></li>
                                     <li className="cs " id={'groups'}   onClick={(e) => this.activeHandler(e)}><Link to="#" className='link'>Группы</Link></li>
-                                    <li className="cs " id={'account'}  onClick={(e) => this.activeHandler(e)}><Link to="#" className='link'>Профиль</Link></li>
+                                    {/*<li className="cs " id={'account'}  onClick={(e) => this.activeHandler(e)}><Link to="#" className='link'>Профиль</Link></li>*/}
                                     <li className="cs"  id={'settings'} onClick={(e) => this.activeHandler(e)}><Link to="#" className='link'>Настройки</Link></li>
                                     <li className="cs btn-danger "   onClick={() => {
                                         localStorage.removeItem('user')
@@ -97,16 +82,7 @@ export class ProfilePage extends React.Component {
                         </div>
                     </div>
                     <div className="right-block col-9 ml-5 pl-0 ">
-                        {this.state.isBlock==='common-chat'&& <CommonChat roomdata={this.state.commonChat} dispatecher={(e) =>this.selector(e)} user={this.state.user} {...this.props}/> }
-                        {this.state.isBlock==='invitation'&&  <Invitelist dispatecher={(e) =>this.selector(e)} user={this.state.user} {...this.props}/> }
-                        {this.state.isBlock==='news'&&  <News dispatecher={(e) =>this.selector(e)}  user={this.state.user} {...this.props}/> }
-                        {this.state.isBlock==='chat'&&  <Chat dispatecher={(e) =>this.selector(e)}  user={this.state.user} {...this.props}/> }
-                        {this.state.isBlock==='chatroom'&&  <Chatroom roomdata={this.state.data}  dispatecher={this.selector}  user={this.state.user} {...this.props}/> }
-                        {this.state.isBlock==='friends'&&  <Friends  dispatecher={(e) =>this.selector(e) } user={this.state.user} {...this.props}/> }
-                        {this.state.isBlock==='groups'&&  <Groups create={(e) => this.creator(e)} dispatecher={(e) =>this.selector(e)} user={this.state.user} {...this.props}/> }
-                        {this.state.isBlock==='settings'&&  <Account dispatecher={(e) =>this.selector(e) } user={this.state.user} {...this.props}/> }
-                        {/*{this.state.isBlock==='settings'&&  <Settings dispatecher={(e) =>this.selector(e) } />}*/}
-                        {this.state.isBlock==='creator' &&  <Creator type={this.state} states={(e) =>this.setState({isBlock: e})} user={this.state.user} {...this.props}/> }
+                        {React.cloneElement(this.props.children, { ...this.props, ...this.state})}
                     </div>
                 </div>
             </section>
